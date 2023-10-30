@@ -5,14 +5,13 @@ from .models import Customer
 
 def customer_profile(sender, instance, created, **kwargs):
     if created:
-        group= Group.objects.get(name='customer')
+        group, _ = Group.objects.get_or_create(name='customer')
         instance.groups.add(group)
         
-        
         Customer.objects.create(
-            user= instance,
-            name= instance.username
+            user=instance,
+            name=instance.username
         )
-        print('profile created.')
-        
-post_save.connect(customer_profile,sender=User)
+        print('Profile created.')
+
+post_save.connect(customer_profile, sender=User)
